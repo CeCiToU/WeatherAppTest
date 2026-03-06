@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WeatherApp</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<div class="container">
+    <div class="left-side">
+        <div class="date-info">
+            <h2 id="city-name">Sofia</h2>
+            <p id="full-date">Thursday, 26 February 2026</p>
+        </div>
+        <div class="weather-visual">
+            <img src="https://openweathermap.org/img/wn/03n@4x.png" id="main-icon" alt="weather-icon">
+            <h1 id="main-temp">25°C</h1>
+            <p id="conditions">Few Clouds</p>
+        </div>
+    </div>
+
+    <div class="right-side">
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Enter city">
+            <button id="search-btn">Search</button>
+        </div>
+
+        <div class="details-container">
+            <div class="detail-row">
+                <span class="label">FEELS LIKE</span>
+                <strong class="value" id="feels-like">25°C</strong>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">TEMPERATURE RANGE</span>
+                <div class="range-values">
+                    <span class="min" id="min-temp">MIN: 24°C</span>
+                    <span class="max" id="max-temp">MAX: 34°C</span>
+                </div>
+            </div>
+
+            <div class="detail-group">
+                <div class="detail-row">
+                    <span class="label">HUMIDITY</span>
+                    <strong class="value" id="humidity-val">68%</strong>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-fill" style="width: 68%;"></div>
+                </div>
+            </div>
+
+            <div class="detail-group">
+                <div class="detail-row">
+                    <span class="label">WIND STRENGTH</span>
+                    <strong class="value" id="wind-speed">1.66 Km/h</strong>
+                </div>
+                <div class="wind-visual-box">
+                    <img src="https://img.icons8.com/ios/50/ffffff/wind--v1.png" alt="wind">
+                    <span id="wind-desc">Light Breeze</span>
+                    <div class="wind-dots">
+                        <span class="dot active"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-group">
+                <span class="label">SUNRISE & SUNSET</span>
+                <div class="sun-arc-box">
+                    <svg class="sun-arc" viewBox="0 0 100 50">
+                        <path d="M5,45 A40,40 0 0,1 95,45" fill="none" stroke="#444" stroke-width="2" stroke-dasharray="2,2"/>
+                        <circle id="sun-position" cx="30" cy="15" r="3" fill="#fbc531" />
+                    </svg>
+                    <div class="sun-times">
+                        <span>06:12</span>
+                        <span>19:45</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-group">
+                <div class="detail-row">
+                    <span class="label">AIR QUALITY</span>
+                    <strong class="value" id="aqi-status-text">1 — Good</strong>
+                </div>
+                <div class="aqi-bar">
+                    <div class="aqi-dot" style="left: 0%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
