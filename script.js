@@ -1,23 +1,15 @@
-const cityInput = document.querySelector(".search-box");
-const searchBtn = document.querySelector(".search-btn");
+window.addEventListener("DOMContentLoaded", () => {
+    const cityInput = document.querySelector("input");
+    const searchBtn = document.querySelector("button");
 
-window.addEventListener("load", async () => {
-    await fetchWeather("Sofia");
-});
-
-searchBtn.addEventListener("click", async () => {
-    const city = cityInput.value.trim();
-
-    if (!city) {
-        alert("Please enter a city.");
+    if (!cityInput || !searchBtn) {
+        console.error("Search input or button not found in HTML.");
         return;
     }
 
-    await fetchWeather(city);
-});
+    fetchWeather("Sofia");
 
-cityInput.addEventListener("keydown", async (event) => {
-    if (event.key === "Enter") {
+    searchBtn.addEventListener("click", async () => {
         const city = cityInput.value.trim();
 
         if (!city) {
@@ -26,7 +18,20 @@ cityInput.addEventListener("keydown", async (event) => {
         }
 
         await fetchWeather(city);
-    }
+    });
+
+    cityInput.addEventListener("keydown", async (event) => {
+        if (event.key === "Enter") {
+            const city = cityInput.value.trim();
+
+            if (!city) {
+                alert("Please enter a city.");
+                return;
+            }
+
+            await fetchWeather(city);
+        }
+    });
 });
 
 async function fetchWeather(city) {
