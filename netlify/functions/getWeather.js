@@ -19,15 +19,15 @@ export default async (request) => {
       });
     }
 
-    const apiUrl =
+    const weatherUrl =
       `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
 
-    const weatherResponse = await fetch(apiUrl);
+    const weatherResponse = await fetch(weatherUrl);
+    const weatherData = await weatherResponse.json();
 
     if (!weatherResponse.ok) {
-      const errorText = await weatherResponse.text();
       return new Response(
-        JSON.stringify({ error: "Weather API request failed", details: errorText }),
+        JSON.stringify({ error: weatherData.message || "City not found." }),
         {
           status: weatherResponse.status,
           headers: { "Content-Type": "application/json" }
@@ -35,15 +35,42 @@ export default async (request) => {
       );
     }
 
-    const data = await weatherResponse.json();
+    let aqi = null;
+    const lat = weatherData.coord?.lat;
+    const lon = weatherData.coord?.lon;
 
-    return new Response(JSON.stringify({
-      city: data.name,
-      temperature: data.main?.temp,
-      humidity: data.main?.humidity,
-      description: data.weather?.[0]?.description,
-      windSpeed: data.wind?.speed
-    }), {
+    if (lat != null && lon != null) {
+      const airUrl =
+        `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+
+      const airResponse = await fetch(airUrl);
+      const airData = await airResponse.json();
+
+      if (airResponse.ok && airData.list && airData.list[0] && airData.list[0].main) {
+        aqi = airData.list[0].main.aqi;
+      }
+    }
+
+    const result = {
+      cityName: weatherData.name,
+      icon: weatherData.weather?.[0]?.icon,
+      conditions: weatherData.weather?.[0]?.description,
+      mainCondition: weatherData.weather?.[0]?.main,
+      temperature: {
+        temp: weatherData.main?.temp,
+        feels_like: weatherData.main?.feels_like,
+        min: weatherData.main?.temp_min,
+        max: weatherData.main?.temp_max
+      },
+      humidity: weatherData.main?.humidity,
+      windSpeed: weatherData.wind?.speed,
+      timezone: weatherData.timezone,
+      sunrise: weatherData.sys?.sunrise,
+      sunset: weatherData.sys?.sunset,
+      aqi: aqi
+    };
+
+    return new Response(JSON.stringify(result), {
       status: 200,
       headers: { "Content-Type": "application/json" }
     });
