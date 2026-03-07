@@ -19,8 +19,7 @@ export default async (request) => {
       });
     }
 
-    const weatherUrl =
-      `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
 
     const weatherResponse = await fetch(weatherUrl);
     const weatherData = await weatherResponse.json();
@@ -40,13 +39,17 @@ export default async (request) => {
     const lon = weatherData.coord?.lon;
 
     if (lat != null && lon != null) {
-      const airUrl =
-        `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+      const airUrl = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
 
       const airResponse = await fetch(airUrl);
       const airData = await airResponse.json();
 
-      if (airResponse.ok && airData.list && airData.list[0] && airData.list[0].main) {
+      if (
+        airResponse.ok &&
+        airData.list &&
+        airData.list[0] &&
+        airData.list[0].main
+      ) {
         aqi = airData.list[0].main.aqi;
       }
     }
@@ -76,7 +79,10 @@ export default async (request) => {
     });
   } catch (error) {
     return new Response(
-      JSON.stringify({ error: "Server error", details: error.message }),
+      JSON.stringify({
+        error: "Server error",
+        details: error.message
+      }),
       {
         status: 500,
         headers: { "Content-Type": "application/json" }
